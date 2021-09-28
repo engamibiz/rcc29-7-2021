@@ -51,3 +51,7 @@ $categoryObject=new categories();
 // $categoryObject->insert("name='emarketing'");
 // $userObject->update("userName='essam',email='essam@gmail.com'",4);
 // $userObject->delete(4);
+
+
+
+// https://github.com/engamibiz/rcc29-7-2021
