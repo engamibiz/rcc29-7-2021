@@ -13,7 +13,7 @@ class model{
         $table=get_class($this);
         $stmt=$conn->prepare("SELECT * FROM $table WHERE id=$id");
         $stmt->execute();
-        return $stmt->fetchAll();
+        return $stmt->fetch();
     }
     function insert($set){
         global $conn;
