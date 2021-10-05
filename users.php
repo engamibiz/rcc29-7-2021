@@ -56,9 +56,54 @@ if($do == 'select'){
         header("Location:users.php");
     }
 }elseif($do == 'add'){
-    echo 'add page';
+   ?>
+        <div class="container mt-5 pt-5">
+    <form class="row g-3 needs-validation" novalidate method="post" action="users.php?do=insert">
+        <div class="col-md-4">
+            <label for="validationCustom01" class="form-label">User name</label>
+            <input type="text" class="form-control" name="userName"  id="validationCustom01" required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div class="invalid-feedback">
+                Please choose a username.
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label for="validationCustom02" class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" id="validationCustom02"  required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div class="invalid-feedback">
+                Please choose a email.
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label for="validationCustomUsername" class="form-label">Password</label>
+            <div class="input-group has-validation">
+                <input type="password" class="form-control" name="password" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+                <div class="invalid-feedback">
+                    Please choose a password.
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">Submit form</button>
+        </div>
+    </form>
+        </div>
+<?php
 }elseif($do == 'insert'){
-    echo 'insert page';
+    $userName=$_POST['userName'];
+    $email=$_POST['email'];
+    $password=$_POST['password'];
+    $passhash=password_hash($password,PASSWORD_BCRYPT);
+   echo $passhash;
 }elseif($do == 'edit'){
     echo 'edit page';
 }elseif($do == 'update'){
