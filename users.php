@@ -103,13 +103,43 @@ if($do == 'select'){
     $email=$_POST['email'];
     $password=$_POST['password'];
     $passhash=password_hash($password,PASSWORD_BCRYPT);
-   echo $passhash;
+
+    if(empty($userName)){
+        $errors[]= 'user name can not be empty';
+    }
+    if(empty($email)){
+        $errors[]=  'email can not be empty';
+    }
+    if(empty($password)){
+        $errors[]=  'password can not be empty';
+    }
+    $count=$userObject->unique("userName='$userName'");
+    if($count > 0 ){
+        $errors[]=  'User Name is already registered';
+    }
+    $count=$userObject->unique("email='$email'");
+    if($count > 0 ){
+        $errors[]=  'email is already registered';
+    }
+    if(isset($errors)){
+        foreach ($errors as $error){
+            echo '<div class="alert alert-danger">' . $error . '</div>';
+        }
+    }else{
+        $userObject->insert("userName='$userName',email='$email',password='$passhash'");
+        echo '<div class="alert alert-success">Added Successfully</div>';
+    }
+    header("Refresh:2;url=users.php");
 }elseif($do == 'edit'){
     echo 'edit page';
 }elseif($do == 'update'){
     echo 'update page';
 }elseif($do == 'delete'){
-    echo 'delete page';
+    if(isset($_GET['id'])){
+        $id=$_GET['id'];
+        $userObject->delete($id);
+    }
+    header("Location:users.php");
 }else{
     echo 'you are not authorized';
 }

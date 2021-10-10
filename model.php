@@ -35,6 +35,14 @@ class model{
         $stmt=$conn->prepare("DELETE FROM $table WHERE id='$id'");
         $stmt->execute();
     }
+    function unique($where){
+        global $conn;
+        $table=get_class($this);
+        $stmt=$conn->prepare("SELECT * FROM $table WHERE $where");
+        $stmt->execute();
+        return $stmt->rowCount();
+        // $where = userName='$userName'
+    }
 }
 class users extends model{
 
