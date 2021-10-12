@@ -138,8 +138,10 @@ if($do == 'select'){
     if(isset($_GET['id'])){
         $id=$_GET['id'];
         $userObject->delete($id);
+        header("Location:users.php");
+    }else{
+        header("Location:users.php");
     }
-    header("Location:users.php");
 }else{
     echo 'you are not authorized';
 }
