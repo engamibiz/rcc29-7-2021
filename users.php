@@ -131,9 +131,88 @@ if($do == 'select'){
     }
     header("Refresh:2;url=users.php");
 }elseif($do == 'edit'){
-    echo 'edit page';
+    if(isset($_GET['id'])){
+        $id=$_GET['id'];
+        $user=$userObject->find($id);
+    }else{
+        header("Location:users.php");
+    }
+    ?>
+    <div class="container mt-5 pt-5">
+        <form class="row g-3 needs-validation" novalidate method="post" action="users.php?do=update">
+            <input type="hidden" name="id" value="<?php echo $id; ?>">
+            <div class="col-md-4">
+                <label for="validationCustom01" class="form-label">User name</label>
+                <input type="text" class="form-control" value="<?php echo $user['userName']; ?>" name="userName"  id="validationCustom01" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+                <div class="invalid-feedback">
+                    Please choose a username.
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label for="validationCustom02" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" value="<?php echo $user['email']; ?>" id="validationCustom02"  required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+                <div class="invalid-feedback">
+                    Please choose a email.
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label for="validationCustomUsername" class="form-label">Password</label>
+                <div class="input-group has-validation">
+                    <input type="password" class="form-control"  name="password" id="validationCustomUsername" aria-describedby="inputGroupPrepend" >
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please choose a password.
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <button class="btn btn-primary" type="submit">Submit form</button>
+            </div>
+        </form>
+    </div>
+    <?php
 }elseif($do == 'update'){
-    echo 'update page';
+    $id=$_POST['id'];
+    $userName=$_POST['userName'];
+    $email=$_POST['email'];
+    if(empty($userName)){
+        $errors[]='username can not be empty';
+    }
+    if(empty($email)){
+        $errors[]='email can not be empty';
+    }
+    $count=$userObject->unique("userName='$userName' AND id!='$id'");
+    if($count > 0 ){
+        echo 'userName is already registerd';
+    }
+    $count=$userObject->unique("email='$email' AND id!='$id'");
+    if($count > 0 ){
+        echo 'Email is already registerd';
+    }
+    if(isset($errors)){
+        foreach ($errors as $error){
+            echo '<div class="alert alert-danger">' . $error . '</div>';
+        }
+    }else{ // no errors
+        if(empty($_POST['password'])){
+            $userObject->update("userName='$userName',email='$email'",$id);
+        }else{ // has password
+            $password=$_POST['password'];
+            $passhash=password_hash($password,PASSWORD_BCRYPT);
+            $userObject->update("userName='$userName',email='$email' , password='$passhash'",$id);
+        }
+        echo '<div class="alert alert-success">updated successflly </div>';
+        header("Refresh:3;url=users.php");
+    }
 }elseif($do == 'delete'){
     if(isset($_GET['id'])){
         $id=$_GET['id'];
