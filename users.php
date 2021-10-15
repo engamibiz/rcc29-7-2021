@@ -1,5 +1,10 @@
 <?php
+
 include 'header.php';
+if($loginUser['userGroup'] != 'admin'){
+    header("Location:categories.php");
+}
+
 if(isset($_GET['do'])){
 $do=$_GET['do'];
 }else{

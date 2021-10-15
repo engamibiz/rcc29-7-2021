@@ -1,4 +1,12 @@
-<?php include "model.php"; ?>
+<?php
+session_start();
+if(!isset($_SESSION['login'])){
+    header("Location:index.php");
+}
+include "model.php";
+$loginUser=$userObject->find($_SESSION['id']);
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -24,8 +32,16 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
+                <?php if($loginUser['userGroup'] == 'admin'){ ?>
                 <li class="nav-item">
                     <a class="nav-link" href="users.php">users</a>
+                </li>
+                <?php } ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="categories.php">Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout.php">Logout</a>
                 </li>
             </ul>
         </div>
